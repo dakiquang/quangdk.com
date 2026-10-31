@@ -1,0 +1,220 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "quangdk.com",
+		"description": "Personal site of Quang Dang: work, writing and the decisions behind them",
+		"author": "Quang Dang"
+	},
+	"settings": {
+		"title": "Quang Dang",
+		"tagline": "Product-minded tech lead. Simple is the hardest thing to build."
+	},
+	"collections": [
+		{
+			"slug": "posts",
+			"label": "Writing",
+			"labelSingular": "Article",
+			"urlPattern": "/writing/{slug}",
+			"supports": ["drafts", "revisions", "preview", "scheduling", "search", "seo"],
+			"fields": [
+				{ "slug": "title", "label": "Title", "type": "string", "required": true, "searchable": true },
+				{
+					"slug": "kind",
+					"label": "Kind",
+					"type": "select",
+					"validation": { "options": ["Essay", "Production", "AI with guardrails", "Product", "Engineering"] }
+				},
+				{ "slug": "excerpt", "label": "Summary", "type": "text", "searchable": true },
+				{ "slug": "featured_image", "label": "Featured image", "type": "image" },
+				{ "slug": "content", "label": "Content", "type": "portableText", "searchable": true }
+			]
+		},
+		{
+			"slug": "work",
+			"label": "Work",
+			"labelSingular": "Case study",
+			"urlPattern": "/work/{slug}",
+			"supports": ["drafts", "revisions", "preview", "search", "seo"],
+			"fields": [
+				{ "slug": "title", "label": "Title", "type": "string", "required": true, "searchable": true },
+				{ "slug": "summary", "label": "Summary", "type": "text", "required": true, "searchable": true },
+				{ "slug": "role", "label": "Role", "type": "string" },
+				{ "slug": "years", "label": "Years", "type": "string" },
+				{ "slug": "platforms", "label": "Platforms", "type": "string" },
+				{ "slug": "stack", "label": "Stack", "type": "string" },
+				{ "slug": "featured", "label": "Show on home", "type": "boolean" },
+				{ "slug": "sort_order", "label": "Order", "type": "integer" },
+				{ "slug": "featured_image", "label": "Featured image", "type": "image" },
+				{
+					"slug": "tradeoffs",
+					"label": "Decisions and tradeoffs",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{ "slug": "decision", "label": "Decision", "type": "string", "required": true },
+							{ "slug": "gave_up", "label": "What we gave up", "type": "string" },
+							{ "slug": "why", "label": "Why it was worth it", "type": "string" }
+						]
+					}
+				},
+				{ "slug": "content", "label": "Content", "type": "portableText", "searchable": true }
+			]
+		},
+		{
+			"slug": "cuts",
+			"label": "Before / After",
+			"labelSingular": "Decision",
+			"supports": ["drafts"],
+			"fields": [
+				{ "slug": "title", "label": "Internal name", "type": "string", "required": true },
+				{ "slug": "before", "label": "Before", "type": "string", "required": true },
+				{ "slug": "after", "label": "After", "type": "string", "required": true },
+				{ "slug": "sort_order", "label": "Order", "type": "integer" }
+			]
+		}
+	],
+	"content": {
+		"cuts": [
+			{
+				"id": "cut-settings",
+				"slug": "settings",
+				"status": "published",
+				"data": {
+					"title": "Settings",
+					"before": "A separate screen for every contact's notifications",
+					"after": "One sheet, opened from the contact, closed with a tap",
+					"sort_order": 1
+				}
+			},
+			{
+				"id": "cut-words",
+				"slug": "words",
+				"status": "published",
+				"data": {
+					"title": "Words",
+					"before": "\"New monthly run\"",
+					"after": "\"New monthly invoices\"",
+					"sort_order": 2
+				}
+			},
+			{
+				"id": "cut-payments",
+				"slug": "payments",
+				"status": "published",
+				"data": {
+					"title": "Payments",
+					"before": "Pay again while the first charge is still being checked",
+					"after": "One payment at a time, until the bank confirms",
+					"sort_order": 3
+				}
+			},
+			{
+				"id": "cut-upgrades",
+				"slug": "upgrades",
+				"status": "published",
+				"data": {
+					"title": "Upgrades",
+					"before": "Patch the old app for one more year",
+					"after": "Build the new app alongside it, switch in one release",
+					"sort_order": 4
+				}
+			}
+		],
+		"work": [
+			{
+				"id": "work-racing-saas",
+				"slug": "racing-industry-saas",
+				"status": "published",
+				"data": {
+					"title": "Ten years of a racing industry SaaS",
+					"summary": "Billing, owner communication and race logistics for stables in Australia and New Zealand. Web, two mobile apps, payments.",
+					"role": "Tech lead",
+					"years": "2016–now",
+					"platforms": "Web, iOS, Android",
+					"stack": "Laravel (PHP), Node.js, Next.js, ReactJS, React Native, AWS, Stripe",
+					"featured": true,
+					"sort_order": 1,
+					"tradeoffs": [
+						{ "decision": "Rebuild the mobile app alongside the old one, then switch over", "gave_up": "Weeks of running two apps", "why": "Users never saw a half-finished app" },
+						{ "decision": "Block a second payment until the first is confirmed", "gave_up": "A slightly slower retry", "why": "No one is charged twice" },
+						{ "decision": "Edit settings in a sheet, not a new screen", "gave_up": "Less room for options", "why": "Fewer steps, no lost context" }
+					],
+					"content": [
+						{ "_type": "block", "_key": "c0", "style": "normal", "children": [{ "_type": "span", "_key": "c0s", "text": "In short: context in one sentence, what I did in one sentence, the result in one sentence. This case study is a template until it has been approved for publishing." }] },
+						{ "_type": "block", "_key": "c1", "style": "h2", "children": [{ "_type": "span", "_key": "c1s", "text": "Context" }] },
+						{ "_type": "block", "_key": "c2", "style": "normal", "children": [{ "_type": "span", "_key": "c2s", "text": "Who the users are, what they were trying to do, and what made it hard." }] },
+						{ "_type": "block", "_key": "c3", "style": "h2", "children": [{ "_type": "span", "_key": "c3s", "text": "Constraints" }] },
+						{ "_type": "block", "_key": "c4", "style": "normal", "children": [{ "_type": "span", "_key": "c4s", "text": "What could not change: a live product, real payments, a small team, time zones." }] },
+						{ "_type": "block", "_key": "c5", "style": "h2", "children": [{ "_type": "span", "_key": "c5s", "text": "Outcome" }] },
+						{ "_type": "block", "_key": "c6", "style": "normal", "children": [{ "_type": "span", "_key": "c6s", "text": "Concrete results that are approved for publishing. Examples, not adjectives." }] },
+						{ "_type": "block", "_key": "c7", "style": "h2", "children": [{ "_type": "span", "_key": "c7s", "text": "Lessons" }] },
+						{ "_type": "block", "_key": "c8", "style": "normal", "children": [{ "_type": "span", "_key": "c8s", "text": "One or two lessons a reader can use in their own product." }] }
+					]
+				}
+			},
+			{
+				"id": "work-schools",
+				"slug": "one-platform-many-schools",
+				"status": "published",
+				"data": {
+					"title": "One platform, many schools",
+					"summary": "A multi-tenant platform with apps for teachers, parents and students.",
+					"role": "Engineer",
+					"years": "2021–now",
+					"platforms": "Web, iOS, Android",
+					"stack": "Next.js, ReactJS, React Native, Node.js, Google Cloud",
+					"featured": true,
+					"sort_order": 2
+				}
+			},
+			{
+				"id": "work-legacy-app",
+				"slug": "legacy-app-modernised-while-live",
+				"status": "published",
+				"data": {
+					"title": "A legacy app, modernised while live",
+					"summary": "From React Native 0.66 to modern Expo, built alongside the live app and switched over in one release.",
+					"role": "Tech lead",
+					"years": "Mobile",
+					"platforms": "iOS, Android",
+					"stack": "React Native, Expo, TypeScript, ReactJS",
+					"featured": true,
+					"sort_order": 3
+				}
+			}
+		],
+		"posts": [
+			{
+				"id": "post-simple",
+				"slug": "simple-is-the-hardest-thing-to-build",
+				"status": "draft",
+				"data": {
+					"title": "Simple is the hardest thing to build",
+					"kind": "Essay",
+					"excerpt": "Most of the work is deciding what to leave out. Two decisions from real products, and what they cost."
+				}
+			},
+			{
+				"id": "post-two-models",
+				"slug": "two-models-reviewing-each-other",
+				"status": "draft",
+				"data": {
+					"title": "Two models reviewing each other: keeping AI-written code honest",
+					"kind": "AI with guardrails",
+					"excerpt": "One model writes, another audits the plan and the code, a person decides."
+				}
+			},
+			{
+				"id": "post-php8",
+				"slug": "upgrading-production-laravel-to-php-8",
+				"status": "draft",
+				"data": {
+					"title": "Upgrading a production Laravel app to PHP 8, and the two days we lost our error logs",
+					"kind": "Production",
+					"excerpt": "What changed, what broke quietly, and the checks I now run before and after every runtime change."
+				}
+			}
+		]
+	}
+}

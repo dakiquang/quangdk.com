@@ -1,0 +1,30 @@
+---
+import Base from "../layouts/Base.astro";
+import ServicesSection from "../components/ServicesSection.astro";
+import { absolute, personJsonLd } from "../lib/site";
+
+const offers = [
+	"Product and engineering review",
+	"Fractional tech lead",
+	"Modernise without stopping",
+	"Build and ship",
+	"AI with guardrails",
+];
+---
+
+<Base
+	title="Fractional Tech Lead and Product Engineering · Quang Dang"
+	pageTitle="Ways to work together"
+	description="Fractional tech lead, app modernisation and product builds for small teams in Australia, Europe and Vietnam. Start with a product and engineering review."
+	jsonLd={offers.map((name) => ({
+		"@type": "Service",
+		name,
+		provider: { "@id": personJsonLd()["@id"] },
+		areaServed: ["Australia", "New Zealand", "Europe", "Vietnam"],
+		url: absolute("/services"),
+	}))}
+>
+	<div class="page-top">
+		<ServicesSection headingLevel="h1" />
+	</div>
+</Base>

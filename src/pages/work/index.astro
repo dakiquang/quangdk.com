@@ -1,0 +1,32 @@
+---
+import Base from "../../layouts/Base.astro";
+import WorkList from "../../components/WorkList.astro";
+import { getWork } from "../../lib/content";
+import { absolute } from "../../lib/site";
+
+const work = await getWork();
+if (Astro.cache?.enabled) Astro.cache.set(work.cacheHint as never);
+---
+
+<Base
+	title="Selected Work · Quang Dang"
+	pageTitle="Selected work"
+	description="SaaS, mobile and payment systems I've built and run, from racing industry platforms to multi-tenant education apps."
+	jsonLd={[
+		{
+			"@type": "BreadcrumbList",
+			itemListElement: [
+				{ "@type": "ListItem", position: 1, name: "Home", item: absolute("/") },
+				{ "@type": "ListItem", position: 2, name: "Work", item: absolute("/work") },
+			],
+		},
+	]}
+>
+	<div class="page-top">
+		<WorkList
+			items={work.items}
+			headingLevel="h1"
+			intro="SaaS, mobile and payment systems I've built and run, from a racing industry platform to apps for schools."
+		/>
+	</div>
+</Base>

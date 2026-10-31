@@ -1,0 +1,26 @@
+---
+import Base from "../layouts/Base.astro";
+import AboutSection from "../components/AboutSection.astro";
+import { absolute, personJsonLd } from "../lib/site";
+---
+
+<Base
+	title="About Quang Dang · Product-minded Tech Lead"
+	pageTitle="About Quang Dang"
+	description="15+ years, 30+ products, 10 years in SaaS. How I work and what I believe about building simple software."
+	pageType="profile"
+	jsonLd={[
+		{
+			"@type": "ProfilePage",
+			"@id": absolute("/about"),
+			url: absolute("/about"),
+			name: "About Quang Dang",
+			mainEntity: { "@id": personJsonLd()["@id"] },
+		},
+		personJsonLd(),
+	]}
+>
+	<div class="page-top">
+		<AboutSection headingLevel="h1" />
+	</div>
+</Base>

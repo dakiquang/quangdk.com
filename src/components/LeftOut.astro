@@ -1,0 +1,46 @@
+---
+import type { CutData } from "../lib/content";
+
+interface Props {
+	cuts: { id: string; data: CutData }[];
+}
+
+const { cuts } = Astro.props;
+---
+
+{
+	cuts.length > 0 && (
+		<section class="leftout section frame" id="approach" aria-labelledby="leftout-title">
+			<div class="grid">
+				<div class="head">
+					<h2 id="leftout-title" class="title" data-rise>
+						What I leave out<span class="dot" aria-hidden="true" />
+					</h2>
+					<p class="lead" data-rise style="--i:1">
+						Most of the work is deciding what to leave out. A few decisions from products I've led: switch between
+						what was there and what shipped.
+					</p>
+					<div
+						class="toggle"
+						role="group"
+						aria-label="Show the product before or after the change"
+						data-toggle="cuts"
+						data-rise
+						style="--i:2"
+					>
+						<button type="button" data-show="before" aria-pressed="false">Before</button>
+						<button type="button" data-show="after" aria-pressed="true">After</button>
+					</div>
+				</div>
+				<ul class="cuts" id="cuts" aria-live="polite">
+					{cuts.map((cut, i) => (
+						<li class="cut" data-rise style={`--i:${i}`}>
+							<p class="before">{cut.data.before}</p>
+							<p class="after">{cut.data.after}</p>
+						</li>
+					))}
+				</ul>
+			</div>
+		</section>
+	)
+}

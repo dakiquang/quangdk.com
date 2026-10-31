@@ -1,0 +1,45 @@
+---
+import { Picture } from "astro:assets";
+import portrait from "../assets/portrait.jpg";
+
+interface Props {
+	headingLevel?: "h1" | "h2";
+}
+
+const { headingLevel = "h2" } = Astro.props;
+const Heading = headingLevel;
+---
+
+<section class="about section frame" id="about" aria-labelledby="about-title">
+	<div class="grid">
+		<div class="section-head">
+			<Heading id="about-title" class="title" data-rise>About<span class="dot" aria-hidden="true"></span></Heading>
+		</div>
+		<figure class="portrait" data-rise>
+			<Picture
+				src={portrait}
+				formats={["avif", "webp"]}
+				alt="Quang Dang standing in a garden, hands in pockets"
+				widths={[400, 700, 1066]}
+				sizes="(max-width: 600px) 92vw, 40vw"
+				layout="none"
+			/>
+		</figure>
+		<div class="body">
+			<p class="lead" data-rise>
+				I've spent the last ten years building SaaS products for racing, education and printing businesses, leading
+				small engineering teams through releases, payments, mobile apps and design systems.
+			</p>
+			<p class="lead" data-rise style="--i:1">
+				I use AI the way I'd work with a new teammate: useful every day, always reviewed, never left alone with the
+				decision.
+			</p>
+			<ul class="principles">
+				<li data-rise><h3>Leave things out</h3><p>Every screen, field and setting costs the person using it.</p></li>
+				<li data-rise style="--i:1"><h3>Use your users' words</h3><p>If they say "monthly invoices", so does the product.</p></li>
+				<li data-rise style="--i:2"><h3>Be careful with money</h3><p>Payments that can't charge twice. Upgrades users never notice.</p></li>
+				<li data-rise style="--i:3"><h3>AI, with guardrails</h3><p>One model writes, another reviews, a person decides.</p></li>
+			</ul>
+		</div>
+	</div>
+</section>

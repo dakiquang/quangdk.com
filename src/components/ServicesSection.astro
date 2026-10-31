@@ -1,0 +1,47 @@
+---
+interface Props {
+	headingLevel?: "h1" | "h2";
+}
+
+const { headingLevel = "h2" } = Astro.props;
+const Heading = headingLevel;
+
+const offers = [
+	{ title: "Fractional tech lead", body: "Senior technical leadership for a small team that doesn't need it full time yet." },
+	{ title: "Modernise without stopping", body: "Upgrade an ageing app or backend while it keeps serving customers." },
+	{ title: "Build and ship", body: "Web and mobile products from first version to production, payments included." },
+	{ title: "AI with guardrails", body: "AI in your team's work, with review, limits and a clear record of what it did." },
+];
+---
+
+<section class="services" id="services" aria-labelledby="services-title">
+	<div class="frame">
+		<div class="grid">
+			<div class="side">
+				<Heading id="services-title" class="title" data-rise>Services<span class="dot" aria-hidden="true"></span></Heading>
+			</div>
+			<div class="main">
+				<div class="entry" data-rise>
+					<h3>Start with a review<span class="dot" aria-hidden="true"></span></h3>
+					<p class="lead">
+						A fixed-scope look at your product and your codebase together, with a short report on what to simplify first.
+					</p>
+				</div>
+				<div class="offers">
+					{
+						offers.map((offer, i) => (
+							<div data-rise style={`--i:${i}`}>
+								<h3>
+									{offer.title}
+									<span class="dot" aria-hidden="true" />
+								</h3>
+								<p>{offer.body}</p>
+							</div>
+						))
+					}
+				</div>
+				<p class="terms small">A small number of projects at a time. Remote from Vietnam, for teams in Australia, Europe and Vietnam.</p>
+			</div>
+		</div>
+	</div>
+</section>

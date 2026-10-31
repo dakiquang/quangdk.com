@@ -1,0 +1,27 @@
+---
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import LeftOut from "../components/LeftOut.astro";
+import WorkList from "../components/WorkList.astro";
+import AboutSection from "../components/AboutSection.astro";
+import ServicesSection from "../components/ServicesSection.astro";
+import WritingList from "../components/WritingList.astro";
+import { getCuts, getPosts, getWork } from "../lib/content";
+import { personJsonLd, SITE } from "../lib/site";
+
+const [cuts, work, posts] = await Promise.all([getCuts(), getWork({ featuredOnly: true }), getPosts(3)]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cuts.cacheHint as never);
+	Astro.cache.set(work.cacheHint as never);
+	Astro.cache.set(posts.cacheHint as never);
+}
+---
+
+<Base title={SITE.title} jsonLd={[personJsonLd()]}>
+	<Hero />
+	<LeftOut cuts={cuts.items} />
+	<WorkList items={work.items} showAllLink />
+	<AboutSection />
+	<ServicesSection />
+	{posts.items.length > 0 && <WritingList items={posts.items} showAllLink />}
+</Base>

@@ -1,0 +1,92 @@
+---
+import Base from "../layouts/Base.astro";
+import { mailto, personJsonLd } from "../lib/site";
+
+// Draft CV built from what docs/01-brand-data.md can evidence.
+// Pending from Quang: the 2010–2016 timeline, the full product list and a downloadable PDF.
+const experience = [
+	{
+		title: "Tech lead, racing industry SaaS",
+		years: "2016–now",
+		points: [
+			"Lead a small engineering team in Vietnam serving businesses in Australia and New Zealand.",
+			"Own production releases across a Laravel (PHP) and Node.js backend on AWS, a Next.js portal and two React Native apps.",
+			"Upgraded production from PHP 7.4 to 8.2; rebuilt a React Native 0.66 app on modern Expo while the old one stayed live.",
+			"Hardened payments: 3-D Secure, accounting sync, no double charges.",
+		],
+	},
+	{
+		title: "Engineer, multi-tenant education platform",
+		years: "2021–now",
+		points: ["Web and mobile apps for teachers, parents and students on one multi-tenant platform."],
+	},
+];
+
+const skills = [
+	["Backend", "Laravel (PHP), Node.js, Express, GraphQL"],
+	["Web", "ReactJS, Next.js, Vue, Tailwind"],
+	["Mobile", "React Native, Flutter, Expo; App Store and Google Play releases"],
+	["Payments", "Stripe, 3-D Secure, accounting sync"],
+	["Cloud", "AWS, Google Cloud, Cloudflare Workers, Docker, MySQL"],
+	["Leadership", "Releases, code review, engineering process, writing for non-technical readers"],
+	["AI", "AI-assisted development with cross-model review, MCP"],
+];
+---
+
+<Base
+	title="Quang Dang · CV"
+	pageTitle="CV"
+	description="Tech lead with 15+ years in software and 10 in SaaS. Experience, skills and selected projects across web, mobile and payments."
+	jsonLd={[personJsonLd()]}
+>
+	<section class="hero cs-head cv-head frame" aria-labelledby="cv-title">
+		<div class="grid">
+			<h1 id="cv-title" class="display">Curriculum vitae<span class="dot" aria-hidden="true"></span></h1>
+			<p class="lead" data-load style="--d:300ms">
+				Product-minded tech lead with 15+ years building software, 10 of them in SaaS for racing, education and printing
+				businesses. I keep products simple for the people who use them, and solid for the people who run them.
+			</p>
+			<dl class="cs-facts" data-load style="--d:400ms">
+				<div><dt>Role</dt><dd>Tech lead</dd></div>
+				<div><dt>Experience</dt><dd>15+ years, 10 in SaaS</dd></div>
+				<div><dt>Based in</dt><dd>Vietnam, working remotely</dd></div>
+				<div><dt>Markets</dt><dd>Australia, Europe and Vietnam</dd></div>
+			</dl>
+		</div>
+	</section>
+
+	<section class="section frame cv-body" aria-labelledby="cv-experience">
+		<div class="grid">
+			<div class="prose cv-experience">
+				<h2 id="cv-experience" class="title" data-rise>Experience<span class="dot" aria-hidden="true"></span></h2>
+				{
+					experience.map((role) => (
+						<div class="cv-role" data-rise>
+							<h3>{role.title}</h3>
+							<p class="small">{role.years}</p>
+							<ul>
+								{role.points.map((point) => (
+									<li>{point}</li>
+								))}
+							</ul>
+						</div>
+					))
+				}
+				<p class="byline">A full CV is available on request: <a href={mailto}>get in touch</a>.</p>
+			</div>
+			<div class="prose cv-side">
+				<h2 class="title" data-rise>Skills<span class="dot" aria-hidden="true"></span></h2>
+				<dl class="cv-skills" data-rise>
+					{
+						skills.map(([area, list]) => (
+							<div>
+								<dt>{area}</dt>
+								<dd>{list}</dd>
+							</div>
+						))
+					}
+				</dl>
+			</div>
+		</div>
+	</section>
+</Base>

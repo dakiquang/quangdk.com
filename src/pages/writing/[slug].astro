@@ -1,0 +1,66 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import { formatDate, type PostData } from "../../lib/content";
+import { absolute } from "../../lib/site";
+
+const { slug } = Astro.params;
+if (!slug) return Astro.rewrite("/404");
+
+const { entry, cacheHint } = await getEmDashEntry("posts", slug);
+if (!entry) return Astro.rewrite("/404");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const data = entry.data as unknown as PostData & { id: string; publishedAt: Date | null; updatedAt: Date };
+const published = formatDate(data.publishedAt);
+const updated = formatDate(data.updatedAt);
+---
+
+<Base
+	title={`${data.title} · Quang Dang`}
+	pageTitle={data.title}
+	description={data.excerpt}
+	pageType="article"
+	articleMeta={{
+		publishedTime: data.publishedAt?.toISOString() ?? null,
+		modifiedTime: data.updatedAt?.toISOString() ?? null,
+		author: "Quang Dang",
+	}}
+	content={{ collection: "posts", id: data.id, slug }}
+	jsonLd={[
+		{
+			"@type": "BreadcrumbList",
+			itemListElement: [
+				{ "@type": "ListItem", position: 1, name: "Home", item: absolute("/") },
+				{ "@type": "ListItem", position: 2, name: "Writing", item: absolute("/writing") },
+				{ "@type": "ListItem", position: 3, name: data.title, item: absolute(`/writing/${slug}`) },
+			],
+		},
+	]}
+>
+	<article>
+		<div class="hero cs-head frame">
+			<div class="grid">
+				<h1 class="display article-title">{data.title}<span class="dot" aria-hidden="true"></span></h1>
+				{data.excerpt && <p class="lead" data-load style="--d:300ms">{data.excerpt}</p>}
+				<dl class="cs-facts" data-load style="--d:400ms">
+					{data.kind && (<div><dt>Kind</dt><dd>{data.kind}</dd></div>)}
+					{published && (<div><dt>Published</dt><dd><time datetime={data.publishedAt?.toISOString()}>{published}</time></dd></div>)}
+				</dl>
+			</div>
+		</div>
+
+		<div class="section frame">
+			<div class="grid">
+				<div class="prose">
+					{data.content && <PortableText value={data.content as never} />}
+					<p class="byline small">
+						Written by <a href="/about">Quang Dang</a>.{updated && updated !== published && ` Updated ${updated}.`}
+					</p>
+					<p class="back"><a href="/writing">Back to writing</a></p>
+				</div>
+			</div>
+		</div>
+	</article>
+</Base>

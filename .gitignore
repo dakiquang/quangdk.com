@@ -1,0 +1,17 @@
+.DS_Store
+node_modules
+.env*
+
+# EmDash / Astro / Wrangler
+dist
+.astro
+.emdash/migrations.json
+uploads
+data.db
+data.db-*
+.wrangler
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*

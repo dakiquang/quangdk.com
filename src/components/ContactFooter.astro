@@ -1,0 +1,63 @@
+---
+import { Picture } from "astro:assets";
+import Arrow from "./Arrow.astro";
+import cutout from "../assets/portrait-cutout.png";
+import { mailto, SITE } from "../lib/site";
+
+interface Props {
+	/** The contact page uses this block as its own content, so it owns the h1 there */
+	headingLevel?: "h1" | "h2";
+	as?: "footer" | "section";
+	/** On the contact page the portrait stands beside the question instead of the closing name */
+	withPortrait?: boolean;
+}
+
+const { headingLevel = "h2", as = "footer", withPortrait = false } = Astro.props;
+const Heading = headingLevel;
+const Root = as;
+const year = new Date().getFullYear();
+---
+
+<Root class:list={["contact", { "contact--portrait": withPortrait }]} id="contact" aria-labelledby="contact-title">
+	<div class="frame">
+		<div class="grid">
+			{
+				withPortrait ? (
+					<Heading id="contact-title" class="display lines">
+						<span class="line"><span data-line>Have a product that</span></span>{" "}
+						<span class="line"><span data-line style="--i:1">should be simpler?</span></span>
+					</Heading>
+				) : (
+					<Heading id="contact-title" class="display" data-rise>Have a product that should be simpler?</Heading>
+				)
+			}
+			<p class="lead" data-rise style="--i:1">Tell me what you're building and where it hurts.</p>
+			<div class="actions" data-rise style="--i:2">
+				<a class="btn" href={mailto}>{SITE.email}<Arrow /></a>
+				<div class="links">
+					{SITE.links.linkedin && <a href={SITE.links.linkedin} rel="me">LinkedIn</a>}
+					<a href={SITE.links.github} rel="me">GitHub</a>
+					<a href="/cv">CV</a>
+				</div>
+			</div>
+			{
+				withPortrait ? (
+					<figure class="hero-figure contact-figure">
+						<div class="stage">
+							<span class="disc" aria-hidden="true" />
+							<div class="cut">
+								<Picture src={cutout} formats={["avif", "webp"]} alt="Quang Dang" widths={[240, 380, 560]} sizes="(max-width: 600px) 60vw, 30vw" layout="none" />
+							</div>
+						</div>
+					</figure>
+				) : (
+					<p class="signature" aria-hidden="true"><span>Quang Dang<span class="dot" /></span></p>
+				)
+			}
+			<div class="colophon" data-rise style="--i:3">
+				<span>© {year} {SITE.name} ({SITE.handle})</span>
+				<span>Built simply.</span>
+			</div>
+		</div>
+	</div>
+</Root>

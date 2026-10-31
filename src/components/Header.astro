@@ -1,0 +1,26 @@
+---
+import { NAV } from "../lib/site";
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+
+<header class="site-header">
+	<div class="frame">
+		<a class="wordmark" href="/">Quang Dang<span class="dot" aria-hidden="true"></span></a>
+		<nav class="nav" aria-label="Main">
+			{
+				NAV.map((item) => (
+					<a
+						href={item.href}
+						class={"optional" in item && item.optional ? "opt" : undefined}
+						aria-current={isCurrent(item.href) ? "page" : undefined}
+					>
+						{item.label}
+					</a>
+				))
+			}
+			<a class="btn" href="/contact">Get in touch</a>
+		</nav>
+	</div>
+</header>

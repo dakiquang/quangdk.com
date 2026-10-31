@@ -1,0 +1,96 @@
+---
+import { Font } from "astro:assets";
+import { EmDashBodyEnd, EmDashBodyStart, EmDashHead } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import Header from "../components/Header.astro";
+import ContactFooter from "../components/ContactFooter.astro";
+import { absolute, SITE } from "../lib/site";
+import "../styles/global.css";
+
+interface Props {
+	/** Document title. Pages pass their full title, e.g. "About Quang Dang · Product-minded Tech Lead" */
+	title: string;
+	/** Headline used for Open Graph and JSON-LD when it differs from the document title */
+	pageTitle?: string;
+	description?: string;
+	image?: string | null;
+	pageType?: "website" | "article" | "profile";
+	articleMeta?: { publishedTime?: string | null; modifiedTime?: string | null; author?: string | null };
+	/** Extra JSON-LD objects for this page (Person, ProfilePage, BreadcrumbList) */
+	jsonLd?: Record<string, unknown>[];
+	/** Content entry rendered on this page, so EmDash can overlay its SEO panel values */
+	content?: { collection: string; id: string; slug?: string | null };
+	/** Hide the closing contact block, e.g. on the contact page itself */
+	contactFooter?: boolean;
+	noindex?: boolean;
+}
+
+const {
+	title,
+	pageTitle,
+	description = SITE.description,
+	image = absolute("/images/portrait.jpg"),
+	pageType = "website",
+	articleMeta,
+	jsonLd = [],
+	content,
+	contactFooter = true,
+	noindex = false,
+} = Astro.props;
+
+const canonical = absolute(Astro.url.pathname);
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: pageType === "profile" ? "website" : pageType,
+	title,
+	pageTitle: pageTitle ?? title,
+	description,
+	canonical,
+	image,
+	content,
+	siteName: SITE.name,
+	siteUrl: SITE.url,
+	articleMeta,
+	seo: noindex ? { robots: "noindex, nofollow" } : undefined,
+});
+
+const structured =
+	jsonLd.length > 0 ? { "@context": "https://schema.org", "@graph": jsonLd } : null;
+---
+
+<!doctype html>
+<html lang="en-AU">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		<meta name="theme-color" content="#ffffff" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="alternate" type="application/rss+xml" title={`${SITE.name}, writing`} href="/rss.xml" />
+		<Font cssVariable="--font-inter-tight" preload />
+		<script is:inline>
+			// Motion classes only apply once the site script has run; fall back to the plain page if it never does
+			document.documentElement.classList.add("js");
+			setTimeout(function () {
+				if (!window.__site) document.documentElement.classList.remove("js");
+			}, 2500);
+		</script>
+		<EmDashHead page={pageCtx} />
+		{structured && <script type="application/ld+json" set:html={JSON.stringify(structured)} />}
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip" href="#main">Skip to content</a>
+		<Header />
+		<main id="main">
+			<slot />
+		</main>
+		{contactFooter && <ContactFooter />}
+		<EmDashBodyEnd page={pageCtx} />
+		<script>
+			import "../scripts/site";
+		</script>
+	</body>
+</html>

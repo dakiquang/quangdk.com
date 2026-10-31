@@ -1,0 +1,46 @@
+---
+import { Picture } from "astro:assets";
+import Arrow from "./Arrow.astro";
+import cutout from "../assets/portrait-cutout.png";
+---
+
+<section class="hero frame" aria-labelledby="hero-title">
+	<div class="grid">
+		<h1 id="hero-title" class="display lines">
+			<span class="line"><span data-line>Simple is the hardest</span></span>
+			<span class="line"><span data-line style="--i:1">thing to build<span class="dot" aria-hidden="true"></span><span class="sr-only">.</span></span></span>
+		</h1>
+		<div class="intro" data-load style="--d:420ms">
+			<p class="lead">
+				I'm Quang Dang, a product-minded tech lead. For 15+ years I've built software, 10 of them in SaaS. Available
+				for teams in Australia, Europe and Vietnam.
+			</p>
+			<div class="actions">
+				<a class="btn" href="/contact">Start a conversation<Arrow /></a>
+				<a href="/work">See selected work</a>
+			</div>
+		</div>
+		<figure class="hero-figure">
+			<div class="stage">
+				<span class="disc" aria-hidden="true"></span>
+				<div class="cut">
+					<Picture
+						src={cutout}
+						formats={["avif", "webp"]}
+						alt="Quang Dang"
+						widths={[240, 380, 560]}
+						sizes="(max-width: 600px) 60vw, 30vw"
+						loading="eager"
+						fetchpriority="high"
+						layout="none"
+					/>
+				</div>
+			</div>
+		</figure>
+		<dl class="facts">
+			<div><dt data-roll>15+</dt><dd>years building software</dd></div>
+			<div><dt data-roll>30+</dt><dd>products worked on</dd></div>
+			<div><dt data-roll>10</dt><dd>years in SaaS</dd></div>
+		</dl>
+	</div>
+</section>

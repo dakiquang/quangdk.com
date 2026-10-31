@@ -1,0 +1,38 @@
+---
+import type { PostData } from "../lib/content";
+
+interface Props {
+	items: { id: string; data: PostData }[];
+	showAllLink?: boolean;
+	headingLevel?: "h1" | "h2";
+}
+
+const { items, showAllLink = false, headingLevel = "h2" } = Astro.props;
+const Heading = headingLevel;
+---
+
+<section class="writing section frame" id="writing" aria-labelledby="writing-title">
+	<div class="grid">
+		<div class="section-head">
+			<Heading id="writing-title" class="title" data-rise>Writing<span class="dot" aria-hidden="true"></span></Heading>
+			{showAllLink && items.length > 0 && <a href="/writing">All writing</a>}
+		</div>
+		{
+			items.length > 0 ? (
+				<ul class="posts">
+					{items.map((post, i) => (
+						<li data-rise style={`--i:${i}`}>
+							<span class="kind small">{post.data.kind ?? "Article"}</span>
+							<a href={`/writing/${post.id}`}>{post.data.title}</a>
+						</li>
+					))}
+				</ul>
+			) : (
+				<p class="lead posts-empty" data-rise>
+					First articles are on the way: on simplicity, on keeping AI-written code honest, and on upgrading software
+					that people rely on every day.
+				</p>
+			)
+		}
+	</div>
+</section>

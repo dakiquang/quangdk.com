@@ -1,0 +1,42 @@
+---
+import type { WorkData } from "../lib/content";
+
+interface Props {
+	items: { id: string; data: WorkData }[];
+	/** Home shows a link to the full list; the /work page is the full list */
+	showAllLink?: boolean;
+	headingLevel?: "h1" | "h2";
+	/** One sentence under the title on the /work page, so the first screen says what this is */
+	intro?: string;
+}
+
+const { items, showAllLink = false, headingLevel = "h2", intro } = Astro.props;
+const Heading = headingLevel;
+---
+
+<section class="work section frame" id="work" aria-labelledby="work-title">
+	<div class="grid">
+		<div class="section-head">
+			<Heading id="work-title" class="title" data-rise>Selected work<span class="dot" aria-hidden="true"></span></Heading>
+			{showAllLink && <a href="/work">All work</a>}
+		</div>
+		{intro && <p class="lead section-intro" data-rise>{intro}</p>}
+		<div class="work-list">
+			{
+				items.map((item, i) => (
+					<a class="work-item" href={`/work/${item.id}`} data-rise="row" style={`--i:${i}`}>
+						<h3>
+							{item.data.title}
+							<span class="dot" aria-hidden="true" />
+						</h3>
+						<p class="what">
+							{item.data.summary}
+							{item.data.stack && <span class="stack"> {item.data.stack}.</span>}
+						</p>
+						{item.data.years && <p class="when small">{item.data.years}</p>}
+					</a>
+				))
+			}
+		</div>
+	</div>
+</section>

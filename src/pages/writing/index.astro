@@ -1,0 +1,18 @@
+---
+import Base from "../../layouts/Base.astro";
+import WritingList from "../../components/WritingList.astro";
+import { getPosts } from "../../lib/content";
+
+const posts = await getPosts();
+if (Astro.cache?.enabled) Astro.cache.set(posts.cacheHint as never);
+---
+
+<Base
+	title="Writing on Simple Software · Quang Dang"
+	pageTitle="Writing"
+	description="Notes from building and running production software: simplicity, modernisation, payments and AI with guardrails."
+>
+	<div class="page-top">
+		<WritingList items={posts.items} headingLevel="h1" />
+	</div>
+</Base>
