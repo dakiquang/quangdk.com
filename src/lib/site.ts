@@ -9,7 +9,7 @@ export const SITE = {
 		"Product-minded tech lead with 15+ years building software, 10 in SaaS. Simple products and solid engineering for teams in Australia, Europe and Vietnam.",
 	jobTitle: "Tech Lead",
 	email: "hello@quangdk.com",
-	mailSubject: "A product that should be simpler",
+	mailSubject: "A new project",
 	links: {
 		github: "https://github.com/dakiquang",
 		linkedin: "https://www.linkedin.com/in/kim-quang-dang-16ba6317/",
