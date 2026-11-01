@@ -4,11 +4,13 @@ import { absolute } from "../lib/site";
 
 // Only published content is listed; drafts and scheduled entries never appear here.
 const PAGES = ["/", "/work", "/about", "/services", "/writing", "/cv", "/contact"];
+// Change this date when the content of these pages changes.
+const PAGES_UPDATED_AT = new Date("2026-11-01");
 
 export const GET: APIRoute = async () => {
 	const [work, posts] = await Promise.all([getWork(), getPosts(200)]);
 	const urls = [
-		...PAGES.map((path) => ({ loc: absolute(path), lastmod: null as Date | null })),
+		...PAGES.map((path) => ({ loc: absolute(path), lastmod: PAGES_UPDATED_AT })),
 		...work.items.map((item) => ({ loc: absolute(`/work/${item.id}`), lastmod: item.data.updatedAt })),
 		...posts.items.map((post) => ({ loc: absolute(`/writing/${post.id}`), lastmod: post.data.updatedAt })),
 	];
