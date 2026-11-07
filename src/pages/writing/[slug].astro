@@ -1,5 +1,5 @@
 ---
-import { getEmDashEntry } from "emdash";
+import { getEmDashEntry, getSeoMeta } from "emdash";
 import { PortableText } from "emdash/ui";
 import Base from "../../layouts/Base.astro";
 import { formatDate, type PostData } from "../../lib/content";
@@ -13,15 +13,42 @@ if (!entry) return Astro.rewrite("/404");
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
 const data = entry.data as unknown as PostData & { id: string; publishedAt: Date | null; updatedAt: Date };
-const published = formatDate(data.publishedAt);
-const updated = formatDate(data.updatedAt);
+const isVi = data.lang === "vi";
+// The SEO panel title, when set, replaces the article title in <title>
+const seoMeta = getSeoMeta(entry as never, { siteTitle: "Quang Dang", titleSeparator: " · " });
+const locale = isVi ? "vi-VN" : "en-AU";
+const published = formatDate(data.publishedAt, locale);
+const updated = formatDate(data.updatedAt, locale);
+
+const t = isVi
+	? { home: "Trang chủ", writing: "Bài viết", kind: "Loại", published: "Ngày đăng", by: "Viết bởi", updated: "Cập nhật", back: "Quay lại" }
+	: { home: "Home", writing: "Writing", kind: "Kind", published: "Published", by: "Written by", updated: "Updated", back: "Back to writing" };
+
+// Link the two language versions only when the other one is published too
+let alternates: { hreflang: string; href: string }[] = [];
+if (data.translation_slug) {
+	const other = await getEmDashEntry("posts", data.translation_slug);
+	if (other.entry) {
+		const self = absolute(`/writing/${slug}`);
+		const otherUrl = absolute(`/writing/${data.translation_slug}`);
+		const en = isVi ? otherUrl : self;
+		const vi = isVi ? self : otherUrl;
+		alternates = [
+			{ hreflang: "en", href: en },
+			{ hreflang: "vi", href: vi },
+			{ hreflang: "x-default", href: en },
+		];
+	}
+}
 ---
 
 <Base
-	title={`${data.title} · Quang Dang`}
+	title={seoMeta.title || `${data.title} · Quang Dang`}
 	pageTitle={data.title}
 	description={data.excerpt}
 	pageType="article"
+	lang={isVi ? "vi" : "en-AU"}
+	alternates={alternates}
 	articleMeta={{
 		publishedTime: data.publishedAt?.toISOString() ?? null,
 		modifiedTime: data.updatedAt?.toISOString() ?? null,
@@ -32,8 +59,8 @@ const updated = formatDate(data.updatedAt);
 		{
 			"@type": "BreadcrumbList",
 			itemListElement: [
-				{ "@type": "ListItem", position: 1, name: "Home", item: absolute("/") },
-				{ "@type": "ListItem", position: 2, name: "Writing", item: absolute("/writing") },
+				{ "@type": "ListItem", position: 1, name: t.home, item: absolute("/") },
+				{ "@type": "ListItem", position: 2, name: t.writing, item: absolute("/writing") },
 				{ "@type": "ListItem", position: 3, name: data.title, item: absolute(`/writing/${slug}`) },
 			],
 		},
@@ -45,8 +72,8 @@ const updated = formatDate(data.updatedAt);
 				<h1 class="display article-title">{data.title}<span class="dot" aria-hidden="true"></span></h1>
 				{data.excerpt && <p class="lead" data-load style="--d:300ms">{data.excerpt}</p>}
 				<dl class="cs-facts" data-load style="--d:400ms">
-					{data.kind && (<div><dt>Kind</dt><dd>{data.kind}</dd></div>)}
-					{published && (<div><dt>Published</dt><dd><time datetime={data.publishedAt?.toISOString()}>{published}</time></dd></div>)}
+					{data.kind && (<div><dt>{t.kind}</dt><dd>{data.kind}</dd></div>)}
+					{published && (<div><dt>{t.published}</dt><dd><time datetime={data.publishedAt?.toISOString()}>{published}</time></dd></div>)}
 				</dl>
 			</div>
 		</div>
@@ -56,9 +83,9 @@ const updated = formatDate(data.updatedAt);
 				<div class="prose">
 					{data.content && <PortableText value={data.content as never} />}
 					<p class="byline small">
-						Written by <a href="/about">Quang Dang</a>.{updated && updated !== published && ` Updated ${updated}.`}
+						{t.by} <a href="/about">Quang Dang</a>.{updated && updated !== published && ` ${t.updated} ${updated}.`}
 					</p>
-					<p class="back"><a href="/writing">Back to writing</a></p>
+					<p class="back"><a href="/writing">{t.back}</a></p>
 				</div>
 			</div>
 		</div>

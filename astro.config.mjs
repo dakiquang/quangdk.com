@@ -20,7 +20,7 @@ export default defineConfig({
 			name: "Inter Tight",
 			cssVariable: "--font-inter-tight",
 			weights: [400, 500, 600],
-			subsets: ["latin"],
+			subsets: ["latin", "vietnamese"],
 			display: "swap",
 			fallbacks: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
 		},
