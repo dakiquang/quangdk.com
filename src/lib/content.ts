@@ -25,6 +25,10 @@ export type PostData = {
 	excerpt?: string;
 	featured_image?: { id: string; src?: string; alt?: string; width?: number; height?: number };
 	content?: unknown[];
+	/** Language of the article; missing means English */
+	lang?: "en" | "vi";
+	/** Slug of the same article in the other language */
+	translation_slug?: string;
 };
 
 export type CutData = { title: string; before: string; after: string; sort_order?: number };
@@ -53,5 +57,5 @@ export async function getCuts() {
 	return { items: (entries as unknown as Entry<CutData>[]).sort(byOrder), cacheHint: cacheHint as Hint };
 }
 
-export const formatDate = (date: Date | null) =>
-	date ? date.toLocaleDateString("en-AU", { year: "numeric", month: "long", day: "numeric", timeZone: "Asia/Ho_Chi_Minh" }) : "";
+export const formatDate = (date: Date | null, locale = "en-AU") =>
+	date ? date.toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric", timeZone: "Asia/Ho_Chi_Minh" }) : "";

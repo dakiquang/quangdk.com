@@ -22,8 +22,10 @@ const Heading = headingLevel;
 				<ul class="posts">
 					{items.map((post, i) => (
 						<li data-rise style={`--i:${i}`}>
-							<span class="kind small">{post.data.kind ?? "Article"}</span>
-							<a href={`/writing/${post.id}`}>{post.data.title}</a>
+							<span class="kind small">
+								{post.data.kind ?? "Article"}{post.data.lang === "vi" && " · Tiếng Việt"}
+							</span>
+							<a href={`/writing/${post.id}`} lang={post.data.lang === "vi" ? "vi" : undefined}>{post.data.title}</a>
 						</li>
 					))}
 				</ul>

@@ -23,6 +23,10 @@ interface Props {
 	/** Hide the closing contact block, e.g. on the contact page itself */
 	contactFooter?: boolean;
 	noindex?: boolean;
+	/** Document language, e.g. "vi" for Vietnamese articles */
+	lang?: string;
+	/** Language versions of this page, printed as hreflang links */
+	alternates?: { hreflang: string; href: string }[];
 }
 
 const {
@@ -36,6 +40,8 @@ const {
 	content,
 	contactFooter = true,
 	noindex = false,
+	lang = "en-AU",
+	alternates = [],
 } = Astro.props;
 
 const canonical = absolute(Astro.url.pathname);
@@ -61,7 +67,7 @@ const structured =
 ---
 
 <!doctype html>
-<html lang="en-AU">
+<html lang={lang}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -78,6 +84,7 @@ const structured =
 			}, 2500);
 		</script>
 		<EmDashHead page={pageCtx} />
+		{alternates.map((alt) => <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />)}
 		{structured && <script type="application/ld+json" set:html={JSON.stringify(structured)} />}
 	</head>
 	<body>
