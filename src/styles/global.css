@@ -66,7 +66,10 @@ a:hover { color: var(--color-red); }
 /* Header */
 .site-header { padding: 1.5rem 0; }
 .site-header .frame { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
-.wordmark { font-weight: 600; letter-spacing: -0.01em; text-decoration: none; display: inline-flex; align-items: baseline; }
+.wordmark { font-weight: 600; letter-spacing: -0.01em; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5em; }
+.q-mark { width: 1.75em; height: 1.75em; flex: none; }
+.q-mark__ring, .q-mark__slash { fill: none; stroke: var(--color-ink); stroke-width: 11; stroke-linecap: round; }
+.q-mark__dot { fill: var(--color-red); }
 .nav { display: flex; align-items: center; gap: 1.75rem; }
 .nav a:not(.btn) { text-decoration: none; padding: 0.75rem 0; }
 
@@ -219,6 +222,11 @@ main { padding-bottom: var(--gap-section); overflow-x: clip; }
 .roll__strip > span::before, .roll__mark::before { content: attr(data-n); }
 
 @media (prefers-reduced-motion: no-preference) {
+  /* Header mark draws itself on the first page of a visit */
+  .mark-play .q-mark__ring { animation: q-ring 750ms cubic-bezier(.65,0,.35,1) backwards; }
+  .mark-play .q-mark__slash { animation: q-slash 300ms ease-out 600ms backwards; }
+  .mark-play .q-mark__dot { transform-origin: 84.5px 84.5px; animation: q-dot 500ms cubic-bezier(.34,1.56,.64,1) 850ms backwards; }
+
   /* Load: the two lines rise, then the full stop lands */
   .js .hero [data-line] { transform: translateY(105%); animation: line-up 900ms var(--ease-expo) forwards; animation-delay: calc(120ms + var(--i, 0) * 100ms); }
   .js .hero h1 .dot { opacity: 0; transform: scale(0.4); animation: dot-land 600ms var(--ease-expo) 820ms forwards; }
@@ -254,6 +262,9 @@ main { padding-bottom: var(--gap-section); overflow-x: clip; }
   }
 }
 @keyframes line-up { to { transform: none; } }
+@keyframes q-ring { from { stroke-dasharray: 161 200; stroke-dashoffset: 162; } to { stroke-dasharray: 161 200; stroke-dashoffset: 0; } }
+@keyframes q-slash { from { stroke-dasharray: 22 40; stroke-dashoffset: 23; } to { stroke-dasharray: 22 40; stroke-dashoffset: 0; } }
+@keyframes q-dot { from { transform: scale(0); } to { transform: scale(1); } }
 @keyframes disc-grow { to { transform: none; } }
 @keyframes recede { to { transform: translateY(-4%) scale(0.95); opacity: 0.55; } }
 @keyframes field-open { from { clip-path: inset(0 var(--margin) 0 var(--margin) round 2rem); } to { clip-path: inset(0 0 0 0 round 0); } }

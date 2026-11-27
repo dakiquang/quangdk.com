@@ -7,7 +7,14 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
 
 <header class="site-header">
 	<div class="frame">
-		<a class="wordmark" href="/">Quang Dang<span class="dot" aria-hidden="true"></span></a>
+		<a class="wordmark" href="/">
+			<svg class="q-mark" viewBox="-6.5 -6.5 120 120" aria-hidden="true" focusable="false">
+				<path class="q-mark__ring" d="M 59.27 78.53 A 30 30 0 1 1 78.53 59.27" />
+				<line class="q-mark__slash" x1="58" y1="58" x2="73" y2="73" />
+				<circle class="q-mark__dot" cx="84.5" cy="84.5" r="8" />
+			</svg>
+			Quang Dang
+		</a>
 		<nav class="nav" aria-label="Main">
 			{
 				NAV.map((item) => (
