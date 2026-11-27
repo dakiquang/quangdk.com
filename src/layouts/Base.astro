@@ -83,6 +83,13 @@ const structured =
 			setTimeout(function () {
 				if (!window.__site) document.documentElement.classList.remove("js");
 			}, 2500);
+			// The header mark draws itself once per visit, not on every page
+			try {
+				if (!sessionStorage.getItem("q-mark")) {
+					document.documentElement.classList.add("mark-play");
+					sessionStorage.setItem("q-mark", "1");
+				}
+			} catch (e) {}
 		</script>
 		<EmDashHead page={pageCtx} />
 		{alternates.map((alt) => <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />)}
